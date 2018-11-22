@@ -4,7 +4,6 @@ exports.up = function (knex, Promise) {
       .increments('article_id')
       .primary()
       .unsigned();
-    // .onDelete('CASCADE')
     articles.string('title').notNullable();
     articles.string('body', [10000]).notNullable();
     articles.integer('votes').defaultTo(0);

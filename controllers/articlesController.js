@@ -2,6 +2,9 @@ const {
   fetchArticles,
   fetchSingleArticle,
   updateVotes,
+  removeArticle,
+  fetchComments,
+  addComment,
 } = require('../models/articleModels');
 
 module.exports = {
@@ -25,19 +28,20 @@ module.exports = {
       }).catch(next);
   },
   getSingleArticle(req, res, next) {
-    fetchSingleArticle(req.params).then((article) => {
+    fetchSingleArticle(req.params).then(([article]) => {
+      if (!article) return Promise.reject({ status: 404 });
       const newObj = {
         article: {
-          article_id: article[0].article_id,
-          author: article[0].username,
-          title: article[0].title,
-          votes: article[0].votes,
-          comment_count: article[0].count,
-          created_at: article[0].created_at,
-          topic: article[0].topic,
+          article_id: article.article_id,
+          author: article.username,
+          title: article.title,
+          votes: article.votes,
+          comment_count: article.count,
+          created_at: article.created_at,
+          topic: article.topic,
         },
       };
-      res.status(200).send(newObj);
+      return res.status(200).send(newObj);
     }).catch(next);
   },
   changeVotes(req, res, next) {
@@ -47,5 +51,39 @@ module.exports = {
       };
       res.status(202).send(newObj);
     }).catch(next);
+  },
+  deleteArticle(req, res, next) {
+    // problem here - what should it return?
+    removeArticle(req.params).then((article) => {
+      const newObj = {
+        rows_affected: article,
+      };
+      res.status(204).send(newObj);
+    }).catch(next);
+  },
+  getComments(req, res, next) {
+    fetchComments(req.params, req.query).then((comments) => {
+      const fixedCommentArr = comments.reduce((comArr, comment) => {
+        const newObj = {
+          comment_id: comment.comment_id,
+          user_id: comment.user_id,
+          article_id: comment.article_id,
+          votes: comment.votes,
+          created_at: comment.created_at,
+          body: comment.body,
+        };
+        comArr.push(newObj);
+        return comArr;
+      }, []);
+      res.status(200).send(fixedCommentArr);
+    }).catch(next);
+  },
+  postComment(req, res, next) {
+    addComment(req.params, req.body).then((comment) => {
+      const comObj = {
+        comment: comment[0],
+      };
+      res.status(201).send(comObj);
+    });
   },
 };
