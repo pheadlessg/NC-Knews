@@ -7,7 +7,7 @@ exports.makeRefObj = (rows, column, id) => rows.reduce((refObj, row) => {
 
 exports.formatArticles = (articleArr, userRef) => articleArr.map((artdata) => {
   const {
-    title, topic, created_by, body, created_at,
+    title, topic, created_by, body, created_at, votes,
   } = artdata;
   const time = new Date(created_at);
   return {
@@ -15,6 +15,7 @@ exports.formatArticles = (articleArr, userRef) => articleArr.map((artdata) => {
     topic,
     user_id: userRef[created_by],
     body,
+    votes,
     created_at: time,
   };
 });

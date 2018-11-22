@@ -1,5 +1,4 @@
 exports.up = function (knex, Promise) {
-  console.log('Creating comments table...');
   return knex.schema.createTable('comments', (comments) => {
     comments.increments('comment_id').primary();
     comments
@@ -10,13 +9,12 @@ exports.up = function (knex, Promise) {
       .integer('article_id')
       .references('articles.article_id')
       .unsigned();
-    comments.integer('votes', 0).notNullable();
+    comments.integer('votes').defaultTo(0);
     comments.timestamp('created_at').notNullable();
     comments.string('body', [10000]).notNullable();
   });
 };
 
 exports.down = function (knex, Promise) {
-  console.log('Dropping comments table...');
   return knex.schema.dropTable('comments');
 };

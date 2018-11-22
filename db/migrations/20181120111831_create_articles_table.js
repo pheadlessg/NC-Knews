@@ -1,5 +1,4 @@
 exports.up = function (knex, Promise) {
-  console.log('Creating articles table...');
   return knex.schema.createTable('articles', (articles) => {
     articles
       .increments('article_id')
@@ -8,17 +7,13 @@ exports.up = function (knex, Promise) {
     // .onDelete('CASCADE')
     articles.string('title').notNullable();
     articles.string('body', [10000]).notNullable();
-    articles.integer('votes');
+    articles.integer('votes').defaultTo(0);
     articles.string('topic').references('topics.slug');
     articles.integer('user_id').references('users.user_id');
-    articles
-      .dateTime('created_at')
-      .notNullable()
-      .defaultTo(knex.raw('now()'));
+    articles.timestamp('created_at').notNullable();
   });
 };
 
 exports.down = function (knex, Promise) {
-  console.log('Dropping articles table...');
   return knex.schema.dropTable('articles');
 };
