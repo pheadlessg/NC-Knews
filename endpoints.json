@@ -1,0 +1,11 @@
+{
+    "articles": "/api/articles",
+    "single_article": "/api/articles/:article_id",
+    "article_comments":"/api/articles/:article_id/comments",
+    "topics": "/api/topics",
+    "individual_topic_articles": "/api/topics/:slug/articles",
+    "individual_comments":"/api/comments/:comment_id",
+    "users": "/api/users",
+    "single_user":"/api/users/:user_id"
+}
+  

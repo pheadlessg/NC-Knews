@@ -29,7 +29,7 @@ module.exports = {
   },
   getSingleArticle(req, res, next) {
     fetchSingleArticle(req.params).then(([article]) => {
-      if (!article) return Promise.reject({ status: 404 });
+      if (!article) return Promise.reject({ status: 404, msg: 'Article does not exist' });
       const newObj = {
         article: {
           article_id: article.article_id,
@@ -84,6 +84,6 @@ module.exports = {
         comment: comment[0],
       };
       res.status(201).send(comObj);
-    });
+    }).catch(next);
   },
 };

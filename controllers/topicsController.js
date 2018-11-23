@@ -44,6 +44,6 @@ module.exports = {
         article: article[0],
       };
       res.status(201).send(finalArticle);
-    });
+    }).catch(next);
   },
 };
