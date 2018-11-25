@@ -61,6 +61,7 @@ module.exports = {
       res.status(204).send(newObj);
     }).catch(next);
   },
+
   getComments(req, res, next) {
     fetchComments(req.params, req.query).then((comments) => {
       const fixedCommentArr = comments.reduce((comArr, comment) => {

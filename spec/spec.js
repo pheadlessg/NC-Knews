@@ -211,6 +211,7 @@ describe('/api', () => {
         expect(res.body.user.user_id).to.equal(1);
       }));
       it('GET : FAILURE will respond with 404 when a non-existant user is requested', () => request.get('/api/users/4').expect(404));
+      it('GET : FAILURE will respond with 400 when given a malforned user:id', () => request.get('/api/users/notauser').expect(400));
     });
   });
 });
