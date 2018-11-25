@@ -1,5 +1,6 @@
 exports.handle404 = (err, req, res, next) => {
   if (err.status === 404) {
+    console.log(err);
     res.status(404).send({ msg: 'Page not found' });
   } else (next(err));
 };
@@ -25,3 +26,7 @@ exports.handle500 = (err, req, res, next) => {
     res.status(500).send({ msg: 'Internal Server Error' });
   }
 };
+
+// exports.handle405 = (err, req, res, next) => {
+
+// };

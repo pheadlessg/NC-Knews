@@ -30,6 +30,7 @@ describe('/api', () => {
         expect(res.body.length).to.equal(2);
         expect(res.body[0]).to.have.all.keys('slug', 'description');
       }));
+    // it.only('OTHER METHODS : FAILURE responds with 405 when any method other than GET or POST is attempted', () => request.patch('/api/articles').expect(405));
     // it('OTHER METHOD : FAILURE responds with 405 when any method other than GET or POST is attempted', () => request.patch('/api/topics').expect(405),
     //   // const failMethods = ['DELETE', 'PUT', 'PATCH'];
     //   // return Promise.all(failMethods.map(method => request[method]('/api/topics').expect(405)));
@@ -131,7 +132,7 @@ describe('/api', () => {
           expect(res.body.length).to.equal(13);
           expect(res.body[0].comment_id).to.equal(14);
         }));
-        it('GET : FAILURE will respond with 404 when a non-existant comment is requested', () => request.get('/api/comments/123').expect(404));
+        it('GET : FAILURE will respond with 404 when a non-existant comment is requested', () => request.get('/api/article/1/comments/123').expect(404));
 
         describe('COMMENT QUERIES', () => {
           it('GET : SUCCESS will accept a query for limit', () => request.get('/api/articles/1/comments?limit=2').expect(200).then((res) => {
