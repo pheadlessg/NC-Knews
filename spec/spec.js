@@ -101,7 +101,7 @@ describe('/api', () => {
   describe('/articles', () => {
     it('GET : SUCCESS will respond with 200 and an array of all articles', () => request.get('/api/articles?limit=50').expect(200).then((res) => {
       expect(res.body).to.be.an('array');
-      expect(res.body[0]).to.have.all.keys('author', 'title', 'article_id', 'votes', 'comment_count', 'created_at', 'topic');
+      expect(res.body[0]).to.have.all.keys('author', 'title', 'article_id', 'votes', 'comment_count', 'created_at', 'topic', 'body');
       expect(res.body.length).to.equal(12);
       expect(res.body[0].article_id).to.equal(1);
     }));
@@ -109,7 +109,7 @@ describe('/api', () => {
     describe('/:article_id', () => {
       it('GET : SUCCESS will respond with 200 and an article object when given a parametric endpoint', () => request.get('/api/articles/1').expect(200).then((res) => {
         expect(res.body).to.have.all.keys('article');
-        expect(res.body.article).to.have.all.keys('author', 'title', 'article_id', 'votes', 'comment_count', 'created_at', 'topic');
+        expect(res.body.article).to.have.all.keys('author', 'title', 'article_id', 'votes', 'comment_count', 'created_at', 'topic', 'body');
         expect(res.body.article.article_id).to.equal(1);
       }));
       it('GET : FAILURE will respond with 404 when a non-existant article is requested', () => request.get('/api/articles/50').expect(404));

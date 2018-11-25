@@ -10,7 +10,7 @@ module.exports = {
       orderDir = sort_ascending ? 'asc' : 'desc',
     } = query;
     const newQuery = db('articles')
-      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username', 'articles.created_at')
+      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username', 'articles.created_at', 'articles.body')
       .join('users', 'articles.user_id', '=', 'users.user_id')
       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
       .limit(limit)
@@ -22,7 +22,7 @@ module.exports = {
   },
   fetchSingleArticle(params) {
     return db('articles')
-      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username', 'articles.created_at')
+      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username', 'articles.created_at', 'articles.body')
       .join('users', 'articles.user_id', '=', 'users.user_id')
       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
       .count('comments.comment_id')

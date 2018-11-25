@@ -20,6 +20,7 @@ module.exports = {
             comment_count: article.count,
             created_at: article.created_at,
             topic: article.topic,
+            body: article.body,
           };
           artArr.push(newObj);
           return artArr;
@@ -39,6 +40,7 @@ module.exports = {
           comment_count: article.count,
           created_at: article.created_at,
           topic: article.topic,
+          body: article.body,
         },
       };
       return res.status(200).send(newObj);
