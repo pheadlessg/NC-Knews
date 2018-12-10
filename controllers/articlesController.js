@@ -11,37 +11,14 @@ module.exports = {
   getArticles(req, res, next) {
     fetchArticles(req.query)
       .then((articles) => {
-        const fixedArticlesArr = articles.reduce((artArr, article) => {
-          const newObj = {
-            author: article.username,
-            title: article.title,
-            article_id: article.article_id,
-            votes: article.votes,
-            comment_count: article.count,
-            created_at: article.created_at,
-            topic: article.topic,
-            body: article.body,
-          };
-          artArr.push(newObj);
-          return artArr;
-        }, []);
-        res.status(200).send(fixedArticlesArr);
+        res.status(200).send(articles);
       }).catch(next);
   },
   getSingleArticle(req, res, next) {
     fetchSingleArticle(req.params).then(([article]) => {
       if (!article) return Promise.reject({ status: 404, msg: 'Article does not exist' });
       const newObj = {
-        article: {
-          article_id: article.article_id,
-          author: article.username,
-          title: article.title,
-          votes: article.votes,
-          comment_count: article.count,
-          created_at: article.created_at,
-          topic: article.topic,
-          body: article.body,
-        },
+        articles: article,
       };
       return res.status(200).send(newObj);
     }).catch(next);
@@ -51,7 +28,7 @@ module.exports = {
       const newObj = {
         article: article[0],
       };
-      res.status(202).send(newObj);
+      res.status(200).send(newObj);
     }).catch(next);
   },
   deleteArticle(req, res, next) {

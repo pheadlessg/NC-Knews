@@ -30,13 +30,13 @@ module.exports = {
     } = query;
 
     const newQuery = db('articles')
-      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username', 'articles.created_at')
+      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username as author', 'articles.created_at')
       .join('users', 'articles.user_id', '=', 'users.user_id')
       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
       .limit(limit)
       .offset(p * limit)
       .orderBy(sort_by, orderDir)
-      .count('comments.comment_id')
+      .count('comments.comment_id as comment_count')
       .groupBy('articles.article_id', 'users.user_id')
       .where({ topic: params.slug });
     return newQuery;

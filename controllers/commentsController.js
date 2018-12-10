@@ -9,7 +9,7 @@ module.exports = {
       const newObj = {
         comment: comment[0],
       };
-      res.status(202).send(newObj);
+      res.status(200).send(newObj);
     }).catch(next);
   },
   deleteComment(req, res, next) {

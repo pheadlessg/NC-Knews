@@ -7,13 +7,11 @@ const {
   getComments,
   postComment,
 } = require('../controllers/articlesController');
+const { handle405 } = require('../errors/405error');
 
-articleRouter.get('/:article_id', getSingleArticle);
-articleRouter.patch('/:article_id', changeVotes);
-articleRouter.delete('/:article_id', deleteArticle);
-articleRouter.get('/:article_id/comments', getComments);
-articleRouter.post('/:article_id/comments', postComment);
-articleRouter.get('/', getArticles);
-
+articleRouter.route('/:article_id').get(getSingleArticle).patch(changeVotes).delete(deleteArticle)
+  .all(handle405);
+articleRouter.route('/:article_id/comments').get(getComments).post(postComment).all(handle405);
+articleRouter.route('/').get(getArticles).all(handle405);
 
 module.exports = articleRouter;

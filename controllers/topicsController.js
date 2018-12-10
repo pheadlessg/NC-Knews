@@ -22,20 +22,7 @@ module.exports = {
   },
   getTopicArticles(req, res, next) {
     fetchTopicArticles(req.params, req.query).then((articles) => {
-      const fixedArticlesArr = articles.reduce((artArr, article) => {
-        const newObj = {
-          author: article.username,
-          title: article.title,
-          article_id: article.article_id,
-          votes: article.votes,
-          comment_count: article.count,
-          created_at: article.created_at,
-          topic: article.topic,
-        };
-        artArr.push(newObj);
-        return artArr;
-      }, []);
-      res.status(200).send(fixedArticlesArr);
+      res.status(200).send(articles);
     }).catch(next);
   },
   addNewArticle(req, res, next) {
