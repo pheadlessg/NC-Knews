@@ -8,7 +8,7 @@ exports.up = function (knex, Promise) {
     articles.string('body', [10000]).notNullable();
     articles.integer('votes').defaultTo(0);
     articles.string('topic').references('topics.slug');
-    articles.integer('user_id').references('users.user_id');
+    articles.string('username').references('users.username');
     articles.timestamp('created_at').notNullable();
   });
 };

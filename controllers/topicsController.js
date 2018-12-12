@@ -1,5 +1,8 @@
 const {
-  fetchTopics, makeTopic, fetchTopicArticles, makeArticle,
+  fetchTopics,
+  makeTopic,
+  fetchTopicArticles,
+  makeArticle,
 } = require('../models/topicModels');
 
 module.exports = {
@@ -21,16 +24,20 @@ module.exports = {
       .catch(next);
   },
   getTopicArticles(req, res, next) {
-    fetchTopicArticles(req.params, req.query).then((articles) => {
-      res.status(200).send(articles);
-    }).catch(next);
+    fetchTopicArticles(req.params, req.query)
+      .then((articles) => {
+        res.status(200).send(articles);
+      })
+      .catch(next);
   },
   addNewArticle(req, res, next) {
-    makeArticle(req.params, req.body).then((article) => {
-      const finalArticle = {
-        article: article[0],
-      };
-      res.status(201).send(finalArticle);
-    }).catch(next);
+    makeArticle(req.params, req.body)
+      .then((article) => {
+        const finalArticle = {
+          article: article[0],
+        };
+        res.status(201).send(finalArticle);
+      })
+      .catch(next);
   },
 };

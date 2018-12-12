@@ -10,23 +10,39 @@ module.exports = {
       orderDir = sort_ascending ? 'asc' : 'desc',
     } = query;
     const newQuery = db('articles')
-      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username as author', 'articles.created_at', 'articles.body')
-      .join('users', 'articles.user_id', '=', 'users.user_id')
+      .select(
+        'articles.article_id',
+        'title',
+        'articles.votes',
+        'articles.topic',
+        'articles.username as author',
+        'articles.created_at',
+        'articles.body',
+      )
+      .join('users', 'articles.username', '=', 'users.username')
       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
       .limit(limit)
       .offset(p * limit)
       .orderBy(sort_by, orderDir)
       .count('comments.comment_id as comment_count')
-      .groupBy('articles.article_id', 'users.user_id');
+      .groupBy('articles.article_id', 'users.username');
     return newQuery;
   },
   fetchSingleArticle(params) {
     return db('articles')
-      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username as author', 'articles.created_at', 'articles.body')
-      .join('users', 'articles.user_id', '=', 'users.user_id')
+      .select(
+        'articles.article_id',
+        'title',
+        'articles.votes',
+        'articles.topic',
+        'articles.username as author',
+        'articles.created_at',
+        'articles.body',
+      )
+      .join('users', 'articles.username', '=', 'users.username')
       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
       .count('comments.comment_id as comment_count')
-      .groupBy('articles.article_id', 'users.user_id')
+      .groupBy('articles.article_id', 'users.username')
       .where({ 'articles.article_id': params.article_id });
   },
   updateVotes(params, body) {
@@ -50,7 +66,7 @@ module.exports = {
     } = query;
     return db('comments')
       .select()
-      .join('users', 'comments.user_id', '=', 'users.user_id')
+      .join('users', 'comments.username', '=', 'users.username')
       .limit(limit)
       .offset(p * limit)
       .orderBy(sort_by, orderDir)
@@ -59,7 +75,10 @@ module.exports = {
   addComment(params, body) {
     return db('comments')
       .insert({
-        article_id: params.article_id, user_id: body.user_id, body: body.body, created_at: 'NOW()',
+        article_id: params.article_id,
+        username: body.username,
+        body: body.body,
+        created_at: 'NOW()',
       })
       .returning('*');
   },

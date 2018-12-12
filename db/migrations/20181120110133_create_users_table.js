@@ -1,10 +1,10 @@
 exports.up = function (knex, Promise) {
   return knex.schema.createTable('users', (users) => {
     users
-      .increments('user_id')
+      .string('username')
       .primary()
-      .unsigned();
-    users.string('username').notNullable();
+      .notNullable()
+      .unique();
     users.string('avatar_url').notNullable();
     users.string('name').notNullable();
   });

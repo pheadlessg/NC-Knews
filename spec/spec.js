@@ -91,7 +91,7 @@ describe('/api', () => {
       const newArticle = {
         title: 'this is the title',
         body: 'this is the body',
-        user_id: 1,
+        username: 'rogersop',
       };
       return request
         .post('/api/topics/mitch/articles')
@@ -100,21 +100,21 @@ describe('/api', () => {
         .then((res) => {
           expect(res.body).to.have.all.keys('article');
           expect(res.body.article.title).to.equal('this is the title');
-          expect(res.body.article.user_id).to.equal(1);
+          expect(res.body.article.username).to.equal('rogersop');
           expect(res.body.article.article_id).to.equal(13);
         });
     });
-    it('POST : FAILURE responds with 400 when passed an article with bad data types', () => {
-      const newArticle = {
-        title: 'this is the title',
-        body: 'this is the body',
-        user_id: 'this is the user_id',
-      };
-      return request
-        .post('/api/topics/mitch/articles')
-        .send(newArticle)
-        .expect(400);
-    });
+    // it('POST : FAILURE responds with 400 when passed an article with bad data types', () => {
+    //   const newArticle = {
+    //     title: 'this is the title',
+    //     body: 'this is the body',
+    //     username: 1,
+    //   };
+    //   return request
+    //     .post('/api/topics/mitch/articles')
+    //     .send(newArticle)
+    //     .expect(400);
+    // });
     describe('TOPIC QUERIES', () => {
       it('GET : SUCCESS will accept a query for limit', () => request
         .get('/api/topics/mitch/articles?limit=2')
@@ -219,7 +219,7 @@ describe('/api', () => {
             expect(res.body).to.be.an('array');
             expect(res.body[0]).to.have.all.keys(
               'comment_id',
-              'user_id',
+              'username',
               'article_id',
               'votes',
               'created_at',
@@ -259,7 +259,7 @@ describe('/api', () => {
 
         it('POST : SUCCESS creates a comment, responds with 201 status and the created comment', () => {
           const newComment = {
-            user_id: 1,
+            username: 'rogersop',
             body: 'this is the comment',
           };
           return request
@@ -269,7 +269,7 @@ describe('/api', () => {
             .then((res) => {
               expect(res.body).to.have.all.keys('comment');
               expect(res.body.comment.article_id).to.equal(1);
-              expect(res.body.comment.user_id).to.equal(1);
+              expect(res.body.comment.username).to.equal('rogersop');
               expect(res.body.comment.body).to.equal('this is the comment');
               expect(res.body.comment.comment_id).to.equal(19);
             });
@@ -336,15 +336,15 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body).to.be.an('array');
         expect(res.body.length).to.equal(3);
-        expect(res.body[0]).to.have.all.keys('user_id', 'username', 'avatar_url', 'name');
+        expect(res.body[0]).to.have.all.keys('username', 'avatar_url', 'name');
       }));
-    describe.only('/:username', () => {
+    describe('/:username', () => {
       it('GET : SUCCESS returns 200 status and a user object', () => request
         .get('/api/users/rogersop')
         .expect(200)
         .then((res) => {
           expect(res.body).to.have.all.keys('user');
-          expect(res.body.user.user_id).to.equal(3);
+          expect(res.body.user.username).to.equal('rogersop');
         }));
       it('GET : FAILURE will respond with 404 when a non-existant user is requested', () => request.get('/api/users/123456').expect(404));
       // it('GET : FAILURE will respond with 400 when given a malforned user:id', () => request.get('/api/users/notauser').expect(400));

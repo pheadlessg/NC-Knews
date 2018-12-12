@@ -3,10 +3,7 @@ const db = require('../db/connection');
 module.exports = {
   fetchTopics(query) {
     const {
-      limit = 10,
-      sort_by = 'slug',
-      orderDir = 'asc',
-      p = 0,
+      limit = 10, sort_by = 'slug', orderDir = 'asc', p = 0,
     } = query;
     return db('topics')
       .select()
@@ -30,20 +27,33 @@ module.exports = {
     } = query;
 
     const newQuery = db('articles')
-      .select('articles.article_id', 'title', 'articles.votes', 'articles.topic', 'username as author', 'articles.created_at')
-      .join('users', 'articles.user_id', '=', 'users.user_id')
+      .select(
+        'articles.article_id',
+        'title',
+        'articles.votes',
+        'articles.topic',
+        'articles.username as author',
+        'articles.created_at',
+      )
+      .join('users', 'articles.username', '=', 'users.username')
       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
       .limit(limit)
       .offset(p * limit)
       .orderBy(sort_by, orderDir)
       .count('comments.comment_id as comment_count')
-      .groupBy('articles.article_id', 'users.user_id')
+      .groupBy('articles.article_id', 'users.username')
       .where({ topic: params.slug });
     return newQuery;
   },
   makeArticle(params, body) {
-    return db('articles').insert({
-      topic: params.slug, title: body.title, body: body.body, user_id: body.user_id, created_at: 'NOW()',
-    }).returning('*');
+    return db('articles')
+      .insert({
+        topic: params.slug,
+        title: body.title,
+        body: body.body,
+        username: body.username,
+        created_at: 'NOW()',
+      })
+      .returning('*');
   },
 };
