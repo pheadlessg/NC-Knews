@@ -44,11 +44,7 @@ describe('/api', () => {
       }));
     it('OTHER METHODS : FAILURE responds with 405 when any method other than GET or POST is attempted', () => {
       const url = '/api/topics';
-      const methods = [
-        request.put(url),
-        request.patch(url),
-        request.delete(url),
-      ];
+      const methods = [request.put(url), request.patch(url), request.delete(url)];
       return Promise.all(methods.map(object => object.expect(405)));
     });
     it('POST : SUCCESS creates a topic, responds with 201 status and the created topic', () => {
@@ -168,11 +164,7 @@ describe('/api', () => {
       }));
     it('OTHER METHODS : FAILURE responds with 405 when any method other than GET or POST is attempted', () => {
       const url = '/api/articles';
-      const methods = [
-        request.put(url),
-        request.patch(url),
-        request.delete(url),
-      ];
+      const methods = [request.put(url), request.patch(url), request.delete(url)];
       return Promise.all(methods.map(object => object.expect(405)));
     });
 
@@ -215,9 +207,7 @@ describe('/api', () => {
         .then(() => request.get('/api/articles/1').expect(404)));
       it('OTHER METHODS : FAILURE responds with 405 when any method other than GET, PATCH or DELETE is attempted', () => {
         const url = '/api/articles';
-        const methods = [
-          request.put(url),
-        ];
+        const methods = [request.put(url)];
         return Promise.all(methods.map(object => object.expect(405)));
       });
 
@@ -346,23 +336,18 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body).to.be.an('array');
         expect(res.body.length).to.equal(3);
-        expect(res.body[0]).to.have.all.keys(
-          'user_id',
-          'username',
-          'avatar_url',
-          'name',
-        );
+        expect(res.body[0]).to.have.all.keys('user_id', 'username', 'avatar_url', 'name');
       }));
-    describe('/:user_id', () => {
+    describe.only('/:username', () => {
       it('GET : SUCCESS returns 200 status and a user object', () => request
-        .get('/api/users/1')
+        .get('/api/users/rogersop')
         .expect(200)
         .then((res) => {
           expect(res.body).to.have.all.keys('user');
-          expect(res.body.user.user_id).to.equal(1);
+          expect(res.body.user.user_id).to.equal(3);
         }));
-      it('GET : FAILURE will respond with 404 when a non-existant user is requested', () => request.get('/api/users/4').expect(404));
-      it('GET : FAILURE will respond with 400 when given a malforned user:id', () => request.get('/api/users/notauser').expect(400));
+      it('GET : FAILURE will respond with 404 when a non-existant user is requested', () => request.get('/api/users/123456').expect(404));
+      // it('GET : FAILURE will respond with 400 when given a malforned user:id', () => request.get('/api/users/notauser').expect(400));
     });
   });
 });

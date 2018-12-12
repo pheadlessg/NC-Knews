@@ -3,10 +3,7 @@ const db = require('../db/connection');
 module.exports = {
   fetchUsers(query) {
     const {
-      limit = 10,
-      sort_by = 'user_id',
-      orderDir = 'asc',
-      p = 0,
+      limit = 10, sort_by = 'user_id', orderDir = 'asc', p = 0,
     } = query;
     return db('users')
       .select()
@@ -16,6 +13,9 @@ module.exports = {
       .returning('*');
   },
   fetchSingleUser(params) {
-    return db('users').select().where({ 'users.user_id': params.user_id }).returning('*');
+    return db('users')
+      .select()
+      .where({ 'users.username': params.username })
+      .returning('*');
   },
 };
