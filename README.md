@@ -68,14 +68,6 @@ npm test
 ```
 This runs a battery of tests on the code which checks that all endpoints provide the correct data - including queries - and checks that error handling is being done correctly.
 
-### Deployment
-
-Here's how to deploy this on a live system.
-
-```http
-Instructions for system deployment and heroku host link here
-
-```
 Currently this project is hosted on Heroku [here](https://afternoon-caverns-78721.herokuapp.com/api/).
 
 ### Built With
